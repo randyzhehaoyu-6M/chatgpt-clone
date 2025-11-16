@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     const completion = await openai.chat.completions.create({
       model,
       messages: messages.map((msg: { role: string; content: string }) => ({
-        role: msg.role,
+        role: msg.role as 'system' | 'user' | 'assistant',
         content: msg.content,
       })),
       temperature: 0.7,

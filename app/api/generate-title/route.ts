@@ -41,8 +41,13 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error('Error generating title:', error)
     // Fallback to truncated message
-    const fallbackTitle = body.firstMessage?.substring(0, 50) || 'New Conversation'
-    return NextResponse.json({ title: fallbackTitle })
+    try {
+      const body = await request.json()
+      const fallbackTitle = body.firstMessage?.substring(0, 50) || 'New Conversation'
+      return NextResponse.json({ title: fallbackTitle })
+    } catch {
+      return NextResponse.json({ title: 'New Conversation' })
+    }
   }
 }
 
